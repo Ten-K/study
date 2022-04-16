@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>深度优先遍历和广度优先遍历</title>
+	</head>
+	<body>
+		<div id="parent">
+			<div class="children1">
+				<div class="children1-1">
+					<div class="children1-1-1">a</div>
+				</div>
+				<div class="children1-2">
+					<div class="children1-2-1">b</div>
+				</div>
+			</div>
+			<div class="children2">
+				<div class="children2-1">
+					<div class="children2-1-1">c</div>
+				</div>
+				<div class="children2-2">
+					<div class="children2-2-1">d</div>
+				</div>
+			</div>
+			<div class="children3">
+				<div class="children3-1">e</div>
+			</div>
+		</div>
+	</body>
+	<script>
+    /**
+     * DFS：不保留全部节点，占用空间少(扩展完的节点从栈中弹出删去)，有回溯操作(入栈出栈)，运行速度慢
+     * BFS：保留全部节点，占用空间大，无回溯操作，运行速度相对DFS较快
+     */
+
+		const node_parent = document.querySelector('#parent')
+		// 非递归 DFS 深度优先遍历 栈(先进后出)
+		function dfs1(node) {
+			const stack = [] // 栈
+			const nodes = [] // 存所有节点
+			if (!node) return
+			stack.push(node)
+			while (stack.length) {
+				const item = stack.pop() // 出栈
+				nodes.push(item)
+				const childrens = item.children // 拿到子节点
+				// 从右往左存[children3 , children2, children1]，取(出栈)的时候顺序才能正确(从左往右)
+				for (let i = childrens.length - 1; i >= 0; i--) {
+					stack.push(childrens[i])
+				}
+			}
+			return nodes
+		}
+		console.log('非递归DFS', dfs1(node_parent))
+
+		// 递归 DFS
+		function dfs2(node, nodes = []) {
+			if (!node) return
+			nodes.push(node)
+			const childrens = node.children
+			for (let i = 0; i < childrens.length; i++) {
+				dfs2(childrens[i], nodes)
+			}
+			return nodes
+		}
+		console.log('递归DFS', dfs2(node_parent))
+
+		// BFS 广度优先遍历 队列(先进先出)
+		function bfs1(node) {
+			const queue = [] // 队列
+			const nodes = []
+			if (!node) return
+			queue.push(node)
+			while (queue.length) {
+				const item = queue.shift() // 出列
+				nodes.push(item)
+				const childrens = item.children
+				for (let i = 0; i < childrens.length; i++) {
+					queue.push(childrens[i])
+				}
+			}
+			return nodes
+		}
+		console.log('BFS', bfs1(node_parent))
+	</script>
+</html>
