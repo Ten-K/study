@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>防抖节流</title>
+	</head>
+	<body>
+		<button onclick="debounceClick()">防抖</button>
+		<button onclick="throttleClick()">节流</button>
+	</body>
+	<script>
+    /*
+     * 防抖: 在事件触发n秒后再执行回调，如果在n秒内再次被触发，则重新计算时间
+     * 节流: 如果持续触发某个事件，则每隔n秒执行一次
+     */
+
+		function handle() {
+			console.log(Math.random())
+		}
+
+		function debounce(fn, wait, immediate = false) {
+			let timer
+			return function () {
+				clearTimeout(timer)
+				if (immediate) {
+					// 立即执行
+					// 如果已经执行过，不再执行
+					if (!timer) {
+						fn.apply(this, arguments)
+					}
+					timer = setTimeout(() => {
+						timer = null
+					}, wait)
+				} else {
+					timer = setTimeout(() => {
+						fn.apply(this, arguments) // 把参数传进去
+					}, wait)
+				}
+			}
+		}
+
+		const debounceClick = debounce(handle, 1000, true)
+
+		function throttle(fn, wait, immediate = false) {
+			let timer
+			return function () {
+				if (timer) return
+				if (immediate) {
+					fn.apply(this, arguments)
+					timer = setTimeout(() => {
+						timer = null
+					}, wait)
+				} else {
+					timer = setTimeout(() => {
+						fn.apply(this, arguments)
+						timer = null
+					}, wait)
+				}
+			}
+		}
+
+		const throttleClick = throttle(handle, 1000, true)
+	</script>
+</html>
