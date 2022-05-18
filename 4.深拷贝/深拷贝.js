@@ -1,3 +1,11 @@
+/**
+ * 使用JSON.parse(JSON.stringify())深拷贝的缺点：
+ *    1.如果obj里面有时间对象，则JSON.stringify后再JSON.parse的结果，时间将只是字符串的形式，而不是对象的形式
+ *    2.如果obj里有RegExp(正则表达式的缩写)、Error对象，则序列化的结果将只得到空对象
+ *    3.如果obj里有函数，undefined，则序列化的结果会把函数或 undefined丢失
+ *    4.如果对象中存在循环引用的情况也无法正确实现深拷贝
+ */
+
 const isObject = (target) => {
 	return typeof target === 'object' && target !== null
 }
