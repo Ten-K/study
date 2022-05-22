@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<script>
+			/**
+			 * <div id="app">
+			 *    '123'
+			 *    'asd'
+			 *    <span>
+			 *      <a></a>
+			 *    </span>
+			 *    <span>
+			 *      <a></a>
+			 *      <a></a>
+			 *    </span>
+			 * </div>
+			 */
+			const vNode = {
+				tag: 'div',
+				attr: {
+					id: 'app'
+				},
+				children: [
+					123,
+					'asd',
+					{
+						tag: 'span',
+						children: [
+							{
+								tag: 'a',
+								children: []
+							}
+						]
+					},
+					{
+						tag: 'span',
+						children: [
+							{
+								tag: 'a',
+								children: []
+							},
+							{
+								tag: 'a',
+								children: []
+							}
+						]
+					}
+				]
+			}
+
+			const _render = (vNode) => {
+				// 数字转字符串
+				if (typeof vNode === 'number') {
+					vNode = String(vNode)
+				}
+				// 字符串类型传为文本节点
+				if (typeof vNode === 'string') {
+					return document.createTextNode(vNode)
+				}
+				// 普通dom
+				const dom = document.createElement(vNode.tag)
+				if (vNode.attr) {
+					Object.keys(vNode.attr).forEach((key) => {
+						const value = vNode.attr[key]
+						dom.setAttribute(key, value)
+					})
+				}
+				// 递归
+				vNode.children.forEach((child) => {
+					dom.appendChild(_render(child))
+				})
+				return dom
+			}
+
+			console.log(_render(vNode))
+		</script>
+	</body>
+</html>
