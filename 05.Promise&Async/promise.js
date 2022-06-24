@@ -173,7 +173,7 @@ class Promise {
 				const fn = () => {
 					count++
 					if (count === promises.length) {
-						resolve(res[i])
+						resolve(res)
 					}
 				}
 				Promise.resolve(promise).then(
